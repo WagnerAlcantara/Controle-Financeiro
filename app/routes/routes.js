@@ -1,6 +1,6 @@
 const express = require('express');
 const transactionRouter = express.Router();
-
+const service = require('../services/transactionService');
 
 transactionRouter.get('/', async (request, response) => {
   const { query } = request;
@@ -14,8 +14,9 @@ transactionRouter.get('/', async (request, response) => {
     if (period.length !== 7) {
       throw new Error(`Period, use o formato yyyy-mm`);
     }
-    //Mongo DB
-    response.send({ length: 2, transaction: ['transaction1', 'transaction2'] })
+    const filteredTransactions = await service.getTransactionFrom(period);
+
+    response.send({ length: filteredTransactions.length, transaction: filteredTransactions })
   } catch ({ message }) {
     console.log(message);
     response.status(400).send({ error: message });

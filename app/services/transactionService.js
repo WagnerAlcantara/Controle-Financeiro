@@ -6,3 +6,10 @@ const ObjectId = mongoose.Types.ObjectId;
 // o servidor é Linux, isso faz diferença. Gastei umas boas horas tentando
 // descobrir esse erro :-/
 const TransactionModel = require('../models/TransactionModel');
+async function getTransactionFrom(period) {
+  const transactions = await TransactionModel.find({ yearMonth: period });
+  return transactions;
+}
+module.exports = {
+  getTransactionFrom,
+}
