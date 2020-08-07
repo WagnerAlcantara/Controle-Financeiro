@@ -39,7 +39,23 @@ transactionRouter.post('/', async (request, response) => {
 
   }
 }
-)
+
+);
+
+transactionRouter.put('/', async (request, response) => {
+
+  try {
+
+    throw new Error(`Necessário informar um id para o lançamento`);
+  } catch ({ message }) {
+    console.log(message);
+    response.status(400).send({ error: message });
+
+  }
+
+}
+);
+
 transactionRouter.put('/:id', async (request, response) => {
   const { body, params } = request;
 
@@ -57,5 +73,34 @@ transactionRouter.put('/:id', async (request, response) => {
 
   }
 }
-)
+);
+transactionRouter.delete('/id', async (request, response) => {
+
+  try {
+
+    throw new Error(`ID inexistente`);
+  } catch ({ message }) {
+    console.log(message);
+    response.status(400).send({ error: message });
+
+  }
+
+}
+);
+
+transactionRouter.delete('/:id', async (request, response) => {
+  const { params } = request;
+
+  try {
+
+    //Mongo DB
+    response.send({ status: 'OK' });
+  } catch ({ message }) {
+    console.log(message);
+    response.status(400).send({ error: message });
+
+  }
+}
+);
+
 module.exports = transactionRouter;
