@@ -31,9 +31,23 @@ transactionRouter.post('/', async (request, response) => {
     if (JSON.stringify(body) === '{}') {
       throw new Error(`Conteudo Inexistente`);
     }
+    const { description, value, category, year, month, day, type } = body;
+    const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+    const yearMonthDay = `${yearMonth}-${day.toString().padStart(2, '0')}`;
+    const postTransaction = {
+      description,
+      value,
+      category,
+      year,
+      month,
+      day,
+      yearMonth,
+      yearMonthDay,
+      type,
+    }
+    const newTransaction = await service.postTransaction(postTransaction);
 
-    //Mongo DB
-    response.send({ status: 'OK' });
+    response.send({ status: 'OK', newTransaction, });
   } catch ({ message }) {
     console.log(message);
     response.status(400).send({ error: message });
@@ -66,8 +80,24 @@ transactionRouter.put('/:id', async (request, response) => {
       throw new Error(`Conteudo Inexistente`);
     }
 
-    //Mongo DB
-    response.send({ status: 'OK' });
+    const { description, value, category, year, month, day, type } = body;
+    const { id } = params;
+    const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+    const yearMonthDay = `${yearMonth}-${day.toString().padStart(2, '0')}`;
+    const updateTransaction = {
+      description,
+      value,
+      category,
+      year,
+      month,
+      day,
+      yearMonth,
+      yearMonthDay,
+      type,
+    };
+    const updatedTransaction = await service.updateTransaction(id, updateTransaction);
+
+    response.send({ status: 'OK', transaction: updatedTransaction, });
   } catch ({ message }) {
     console.log(message);
     response.status(400).send({ error: message });

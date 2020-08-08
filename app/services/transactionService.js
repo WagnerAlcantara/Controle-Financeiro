@@ -10,6 +10,18 @@ async function getTransactionFrom(period) {
   const transactions = await TransactionModel.find({ yearMonth: period });
   return transactions;
 }
+
+async function postTransaction(transaction) {
+  const newTransactionMongoDB = await TransactionModel.create(transaction);
+  return newTransactionMongoDB;
+}
+
+async function updateTransaction(_id, transaction) {
+  await TransactionModel.updateOne({ _id: ObjectId(_id) }, transaction);
+  return { _id, ...transaction };
+}
 module.exports = {
   getTransactionFrom,
+  postTransaction,
+  updateTransaction,
 }
