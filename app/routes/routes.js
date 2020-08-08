@@ -105,11 +105,12 @@ transactionRouter.put('/:id', async (request, response) => {
   }
 }
 );
-transactionRouter.delete('/id', async (request, response) => {
+
+transactionRouter.delete('/', async (request, response) => {
 
   try {
 
-    throw new Error(`ID inexistente`);
+    throw new Error('Necessário informar um id para exclusão de lançamento');
   } catch ({ message }) {
     console.log(message);
     response.status(400).send({ error: message });
@@ -123,15 +124,23 @@ transactionRouter.delete('/:id', async (request, response) => {
   const { params } = request;
 
   try {
+    const { id } = params;
 
-    //Mongo DB
-    response.send({ status: 'OK' });
+    const didDelete = await service.deleteTransaction(id);
+
+    if (didDelete) {
+      response.send({
+        status: 'ok',
+        message: `Lançamento de id ${id} excluído com sucesso!`,
+      });
+    } else {
+      throw new Error(`Não foi possível excluir`);
+    }
   } catch ({ message }) {
     console.log(message);
     response.status(400).send({ error: message });
-
   }
-}
-);
+});
+
 
 module.exports = transactionRouter;
