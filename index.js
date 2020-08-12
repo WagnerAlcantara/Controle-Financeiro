@@ -3,12 +3,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('./routes/routes');
 const path = require('path');
-const dotenv = require('dotenv');
 
-/**
- * Faz a leitura do arquivo
- * ".env" por padrão
- */
+const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
@@ -16,9 +12,19 @@ app.use(cors());
 app.use(express.json());
 
 /**
- * Vinculando o React ao app
+ * Vinculando o React
  */
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+/**
+ * Rota raiz
+ */
+app.get('/', (_, response) => {
+  response.send({
+    message:
+      'Por favor, acesse /api',
+  });
+});
 
 /**
  * Rota raiz
